@@ -1,6 +1,7 @@
 function custom_PFP() {
     saved_PFP = {
         Dreamlight: `<img src="https://cdn.discordapp.com/attachments/693009932932349993/745835671230611528/niko_smile.png?size=128" width="20" height="20">`,
+        IstroChat: `<img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/198142ac-f410-423a-bf0b-34c9cb5d9609/dbtif5j-60306864-d6b7-44b6-a9ff-65e8adcfb911.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvMTk4MTQyYWMtZjQxMC00MjNhLWJmMGItMzRjOWNiNWQ5NjA5XC9kYnRpZjVqLTYwMzA2ODY0LWQ2YjctNDRiNi1hOWZmLTY1ZThhZGNmYjkxMS5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.W3KM95rnj_ofajggtIrj5DA6xNti742Ho-VWcV1uYd4" width="20" height="20">`,
         Vaxy: '<img src="https://cdn.discordapp.com/avatars/631395619000549408/f8254af039ebaf9c340b8760b3770e84.png?size=128" width="20" height="20">',
         Ecclesiarch: '<img src="https://cdn.discordapp.com/avatars/148502275755606018/32489338b7bd3cc6be402d124fa461e5.png?size=128" width="20" height="20">',
         Snully: '<img src="https://cdn.discordapp.com/avatars/277041856687243265/99c62a2f5c74fd3fbde29721ba4e439f.png?size=128" width="20" height="20">',
