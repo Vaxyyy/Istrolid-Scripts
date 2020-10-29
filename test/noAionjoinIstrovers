@@ -1,0 +1,12 @@
+let oldBattleModeJoinServer = BattleMode.prototype.joinServer;
+BattleMode.prototype.joinServer = function (serverName) {
+    oldBattleModeJoinServer.apply(this, arguments);
+
+    if (['Istroverse (KevX)'].includes(serverName)) {
+        commander.fleet.selection = {
+            'row': 0,
+            'tab': 'defalt'
+        };
+        account.save();
+    }
+};
