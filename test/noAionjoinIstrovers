@@ -5,7 +5,7 @@ BattleMode.prototype.joinServer = function (serverName) {
     if (['Istroverse (KevX)'].includes(serverName)) {
         commander.fleet.selection = {
             'row': 0,
-            'tab': 'defalt'
+            'tab': 'default'
         };
         account.save();
     }
