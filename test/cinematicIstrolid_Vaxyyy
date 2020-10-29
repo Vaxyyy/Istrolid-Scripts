@@ -1,0 +1,36 @@
+var ci = ci || {
+    time: 10000, // 10sec
+    enabled: false, //runs code or not
+    intv: null,
+    resetTimer: function (newTime) {
+        ci.time = newTime
+        clearInterval(intv);
+        return ci.intv = setInterval(() => {
+            cinematicIstrolid_vaxyyy();
+        }, newTime);
+    }
+};
+ci.intv = setInterval(() => {
+    if (ci.enabled) {
+        battleMode.centerOnUnit = true;
+        commander.selection = [];
+        for (let i in intp.things) {
+            thing = intp.things[i];
+            if (battleMode.serverName === 'Istroverse (KevX)') {
+                if (thing.name === 'Unit') {
+                    if (thing.side === commander.name) {
+                        commander.selection.push(thing);
+                    }
+                }
+            } else {
+                if (thing.name === 'Unit') {
+                    if (thing.side === commander.side) {
+                        commander.selection.push(thing);
+                    }
+                }
+            }
+        }
+    } else {
+        battleMode.centerOnUnit = false;
+    }
+}, ci.time);
