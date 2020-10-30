@@ -1,36 +1,68 @@
+/*
+* build 0.1.5
+* 
+* CinematicIstrolid
+* by Vaxyyy
+*
+* ci.time
+*    number: default time in milliseconds.
+* ci.enabled
+*    true/false: code on or off.
+* ci.resetTimer
+*    number: new time in milliseconds.
+* ci.mode
+*    0: follows all of your own units.
+*    1: follows 1 units at a time.
+*    2: follows all units.
+*/
 var ci = ci || {
+
     time: 10000, // 10sec
-    enabled: false, //runs code or not
+    enabled: true, //runs code or not
     intv: null,
+    mode: 0,
+
     resetTimer: function (newTime) {
         ci.time = newTime
-        clearInterval(intv);
-        return ci.intv = setInterval(() => {
-            cinematicIstrolid_vaxyyy();
-        }, newTime);
+        clearInterval(ci.intv);
+        ci.intv = setInterval(() => {
+            let playing = commander.side === 'spectators' ? false : true;
+            if (ci.enabled) {
+                battleMode.centerOnUnit = true;
+                commander.selection = [];
+
+                if (ci.mode === 0) {
+                    for (let i in intp.things) {
+                        thing = intp.things[i];
+                        if (thing.name === 'Unit' && !(thing.side === 'neutral' || thing.side === 'enemy')) {
+                            if (thing.side === commander.name) {
+                                commander.selection.push(thing);
+                            }
+                        }
+                    }
+                } else if (ci.mode === 1) { 
+                    unitList = []
+                    for (let i in intp.things) {
+                        thing = intp.things[i];
+                        if (thing.name === 'Unit' && !(thing.side === 'neutral' || thing.side === 'enemy')) {
+                            thing = intp.things[i];
+                            unitList.push(thing);
+                        }
+                    }
+                    let ref = unitList[Math.floor(Math.random() * unitList.length)]
+                    commander.selection.push(ref);
+                } else if (ci.mode === 2) { 
+                    for (let i in intp.things) {
+                        thing = intp.things[i];
+                        if (thing.name === 'Unit' && !(thing.side === 'neutral' || thing.side === 'enemy')) {
+                            commander.selection.push(thing);
+                        }
+                    }
+                }
+                battleMode.zoom = commander.selection.length / 5;
+            } else {
+                battleMode.centerOnUnit = false;
+            }
+        }, ci.time);
     }
 };
-ci.intv = setInterval(() => {
-    if (ci.enabled) {
-        battleMode.centerOnUnit = true;
-        commander.selection = [];
-        for (let i in intp.things) {
-            thing = intp.things[i];
-            if (battleMode.serverName === 'Istroverse (KevX)') {
-                if (thing.name === 'Unit') {
-                    if (thing.side === commander.name) {
-                        commander.selection.push(thing);
-                    }
-                }
-            } else {
-                if (thing.name === 'Unit') {
-                    if (thing.side === commander.side) {
-                        commander.selection.push(thing);
-                    }
-                }
-            }
-        }
-    } else {
-        battleMode.centerOnUnit = false;
-    }
-}, ci.time);
