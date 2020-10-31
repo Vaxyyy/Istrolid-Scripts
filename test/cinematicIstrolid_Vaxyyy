@@ -1,5 +1,5 @@
 /*
- * build 0.2.1
+ * build 0.3.1
  * 
  * CinematicIstrolid
  * by Vaxyyy
@@ -28,7 +28,7 @@
  */
 var ci = ci || {
 
-    time: 5000, // 5sec
+    time: 3000, // 3sec
     enabled: true,
     playerName: commander.name.toLowerCase(),
     intv: null,
@@ -46,44 +46,32 @@ var ci = ci || {
         ci.intv = setInterval(() => {
             if (ci.enabled) {
                 battleMode.centerOnUnit = true;
-                commander.selection = [];
-                if (ci.mode === 0) {
-                    let owner
-                    for (var p of intp.players) {
-                        if (p.name.toLowerCase() !== ci.playerName) continue;
-                        owner = p.number;
-                    }
-                    for (let i in intp.things) {
-                        thing = intp.things[i];
-                        if (thing.name === 'Unit' && !(thing.side === 'neutral' || thing.side === 'enemy')) {
+                let owner = commander.number,
+                    unitList = [],
+                    sel = commander.selection;
+                sel = [];
+                for (var p of intp.players) {
+                    if (p.name.toLowerCase() !== ci.playerName) continue;
+                    owner = p.number;
+                }
+                for (let i in intp.things) {
+                    thing = intp.things[i];
+                    if (thing.name === 'Unit' && !(thing.side === 'neutral' || thing.side === 'enemy')) {
+                        if (ci.mode === 0) {
                             if (thing.owner === owner) {
-                                commander.selection.push(thing);
+                                sel.push(thing);
                             }
-                        }
-                    }
-                } else if (ci.mode === 1) {
-                    unitList = []
-                    for (let i in intp.things) {
-                        thing = intp.things[i];
-                        if (thing.name === 'Unit' && !(thing.side === 'neutral' || thing.side === 'enemy')) {
-                            thing = intp.things[i];
+                        } 
+                        else if (ci.mode === 1) {
                             unitList.push(thing);
                         }
-                    }
-                    let ref = unitList[Math.floor(Math.random() * unitList.length)]
-                    commander.selection.push(ref);
-                } else if (ci.mode === 2) {
-                    for (let i in intp.things) {
-                        thing = intp.things[i];
-                        if (thing.name === 'Unit' && !(thing.side === 'neutral' || thing.side === 'enemy')) {
-                            commander.selection.push(thing);
+                        else if (ci.mode === 2) {
+                            sel.push(thing);
                         }
                     }
                 }
-                
-                if (commander.selection.length / 8 > 2.5) battleMode.zoom = 2.5;
-                else if (commander.selection.length / 8 < 1) battleMode.zoom = 1;
-                else battleMode.zoom = commander.selection.length / 8;
+                if (ci.mode === 1) sel.push(unitList[Math.floor(Math.random() * unitList.length)]);
+                battleMode.zoom = sel.length / 10;
             } else {
                 battleMode.centerOnUnit = false;
             }
