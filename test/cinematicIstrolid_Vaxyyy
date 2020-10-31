@@ -1,46 +1,67 @@
 /*
-* build 0.1.5
-* 
-* CinematicIstrolid
-* by Vaxyyy
-*
-* ci.time
-*    number: default time in milliseconds.
-* ci.enabled
-*    true/false: code on or off.
-* ci.resetTimer
-*    number: new time in milliseconds.
-* ci.mode
-*    0: follows all of your own units.
-*    1: follows 1 units at a time.
-*    2: follows all units.
-*/
+ * build 0.2.1
+ * 
+ * CinematicIstrolid
+ * by Vaxyyy
+ *
+ * ---------------------------------------------
+ * 
+ * ci.time
+ *    number: default time in milliseconds.
+ * 
+ * ci.enabled
+ *    true/false: code on or off.
+ * 
+ * ci.playerName
+ *    name: default name.
+ * 
+ * ci.mode
+ *    0: follows all ci.playerName units
+ *    1: follows 1 units at a time.
+ *    2: follows all units.
+ * 
+ * ci.resetTimer
+ *    number: new time in milliseconds.
+ * 
+ * ci.newPlayerName
+ *    name: new player name to follow.
+ */
 var ci = ci || {
 
-    time: 10000, // 10sec
-    enabled: true, //runs code or not
+    time: 5000, // 5sec
+    enabled: true,
+    playerName: commander.name.toLowerCase(),
     intv: null,
-    mode: 0,
+    mode: 2,
 
+    newPlayerName: function (newName) {
+        let ref = newName.toLowerCase();
+        ci.playerName = ref;
+        ci.resetTimer(ci.time)
+        return ci.playerName;
+    },
     resetTimer: function (newTime) {
         ci.time = newTime
         clearInterval(ci.intv);
         ci.intv = setInterval(() => {
-            let playing = commander.side === 'spectators' ? false : true;
             if (ci.enabled) {
                 battleMode.centerOnUnit = true;
                 commander.selection = [];
-
                 if (ci.mode === 0) {
+                    let owner
+                    for (var p of intp.players) {
+                        if (p.name.toLowerCase() !== ci.playerName) continue;
+                        owner = p.number;
+                    }
                     for (let i in intp.things) {
                         thing = intp.things[i];
                         if (thing.name === 'Unit' && !(thing.side === 'neutral' || thing.side === 'enemy')) {
-                            if (thing.side === commander.name) {
+                            if (thing.owner === owner) {
                                 commander.selection.push(thing);
                             }
                         }
                     }
-                } else if (ci.mode === 1) { 
+                } else if (ci.mode === 1) {
                     unitList = []
                     for (let i in intp.things) {
                         thing = intp.things[i];
@@ -51,7 +72,7 @@ var ci = ci || {
                     }
                     let ref = unitList[Math.floor(Math.random() * unitList.length)]
                     commander.selection.push(ref);
-                } else if (ci.mode === 2) { 
+                } else if (ci.mode === 2) {
                     for (let i in intp.things) {
                         thing = intp.things[i];
                         if (thing.name === 'Unit' && !(thing.side === 'neutral' || thing.side === 'enemy')) {
@@ -59,10 +80,14 @@ var ci = ci || {
                         }
                     }
                 }
-                battleMode.zoom = commander.selection.length / 5;
+                
+                if (commander.selection.length / 8 > 2.5) battleMode.zoom = 2.5;
+                else if (commander.selection.length / 8 < 1) battleMode.zoom = 1;
+                else battleMode.zoom = commander.selection.length / 8;
             } else {
                 battleMode.centerOnUnit = false;
             }
         }, ci.time);
+        return ci.time;
     }
 };
