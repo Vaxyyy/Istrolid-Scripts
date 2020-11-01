@@ -1,5 +1,5 @@
 /*
- * build 0.4.2
+ * build 0.6.5
  * 
  * CinematicIstrolid
  * by Vaxyyy
@@ -37,8 +37,8 @@ var ci = ci || {
     playerName: commander.name.toLowerCase(),
     intv: null,
     mode: 2,
-    oldWindow_body: window.body,
-    oldBattlemode_onkeydown: battleMode.onkeydown,
+    window_body_orig: window.body,
+    battlemode_onkeydown_orig: battleMode.onkeydown,
 
     newPlayerName: function (newName) {
         let ref = newName.toLowerCase();
@@ -49,7 +49,7 @@ var ci = ci || {
     resetTimer: function (newTime) {
         ci.time = newTime
         clearInterval(ci.intv);
-        ci.intv = setInterval(() => {
+        return ci.intv = setInterval(() => {
             if (ci.enabled) {
                 battleMode.centerOnUnit = true;
                 let owner = commander.number,
@@ -78,44 +78,55 @@ var ci = ci || {
                 clearInterval(ci.intv);
             }
         }, ci.time);
-        return ci.time;
     },
     drawBox: function () {
         if (ci.enabled && ui.mode === "battle") {
 
             eval(onecup["import"]());
 
-            div(".hover-white-gray", () => {
-                border_radius("15px");
-                text_align("center");
-                padding(20);
-                margin(10);
-
-                text("Cinematic Istrolid - by Vaxyyy");
-
+            css('.center', function () {
+                display('block');
+                margin_left('auto');
+                margin_right('auto');
+                //width('50%');
+            });
+            css(".ci-mainBox", function () {
+                background_color("rgba(0,0,0,.2)");
+                border_radius('0px 0px 5px 5px');
+                text_align('center');
+                margin_right('auto');
+                margin_left('auto');
+                display('block');
+                color('white')
+                padding(4);
+                width(242);
+                height(64);
+            });
+            div('.ci-mainBox', () => {
+                text('Cinematic Istrolid');
                 img({
                     src: 'https://mk0localeyesvidpssgk.kinstacdn.com/wp-content/uploads/2019/05/camera.png',
                     width: 32,
                     height: 32,
+                    class: 'center'
                 });
             });
         }
     },
 };
 
-
 window.body = function () {
-    ci.oldWindow_body.apply(this, arguments);
+    let ret = ci.window_body_orig.call(this);
     ci.drawBox();
+    return ret;
 };
-
 battleMode.onkeydown = e => {
-    if (e.key === "i") {
-        ci.resetTimer(ci.time)
+    if (e.key === "t") {
         ci.enabled = !ci.enabled;
+        ci.resetTimer(ci.time)
         ui.show = !ui.show;
         onecup.refresh();
     } else {
-        return ci.oldBattlemode_onkeydown.call(this, e);
+        return ci.battlemode_onkeydown_orig.call(this, e);
     }
 };
