@@ -1,5 +1,5 @@
 /*
- * build 0.6.5
+ * build 0.6.6
  * 
  * CinematicIstrolid
  * by Vaxyyy
@@ -99,7 +99,7 @@ var ci = ci || {
                 display('block');
                 color('white')
                 padding(4);
-                width(242);
+                width(164);
                 height(64);
             });
             div('.ci-mainBox', () => {
