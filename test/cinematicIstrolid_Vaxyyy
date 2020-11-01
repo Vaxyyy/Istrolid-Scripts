@@ -1,9 +1,13 @@
 /*
- * build 0.3.1
+ * build 0.4.2
  * 
  * CinematicIstrolid
  * by Vaxyyy
+ * 
+ * ---------------------------------------------
  *
+ * press 'i' to turn CinematicIstrolid on and off.
+ * 
  * ---------------------------------------------
  * 
  * ci.time
@@ -29,10 +33,12 @@
 var ci = ci || {
 
     time: 3000, // 3sec
-    enabled: true,
+    enabled: false,
     playerName: commander.name.toLowerCase(),
     intv: null,
     mode: 2,
+    oldWindow_body: window.body,
+    oldBattlemode_onkeydown: battleMode.onkeydown,
 
     newPlayerName: function (newName) {
         let ref = newName.toLowerCase();
@@ -47,35 +53,69 @@ var ci = ci || {
             if (ci.enabled) {
                 battleMode.centerOnUnit = true;
                 let owner = commander.number,
-                    unitList = [],
-                    sel = commander.selection;
-                sel = [];
-                for (var p of intp.players) {
-                    if (p.name.toLowerCase() !== ci.playerName) continue;
-                    owner = p.number;
-                }
+                    unitList = []
+                    commander.selection = [];
+                for (var p of intp.players) if (p.name.toLowerCase() === ci.playerName) owner = p.number;
                 for (let i in intp.things) {
-                    thing = intp.things[i];
-                    if (thing.name === 'Unit' && !(thing.side === 'neutral' || thing.side === 'enemy')) {
+                    unit = intp.things[i];
+                    if (unit.name === 'Unit' && !(unit.side === 'neutral' || unit.side === 'enemy')) {
                         if (ci.mode === 0) {
-                            if (thing.owner === owner) {
-                                sel.push(thing);
+                            if (unit.owner === owner) {
+                                commander.selection.push(unit);
                             }
-                        } 
-                        else if (ci.mode === 1) {
-                            unitList.push(thing);
-                        }
-                        else if (ci.mode === 2) {
-                            sel.push(thing);
+                        } else if (ci.mode === 1) {
+                            unitList.push(unit);
+                        } else if (ci.mode === 2) {
+                            commander.selection.push(unit);
                         }
                     }
                 }
-                if (ci.mode === 1) sel.push(unitList[Math.floor(Math.random() * unitList.length)]);
-                battleMode.zoom = sel.length / 10;
+                if (ci.mode === 1) commander.selection.push(unitList[Math.floor(Math.random() * unitList.length)]);
+                battleMode.zoom = 1.8;
             } else {
                 battleMode.centerOnUnit = false;
+                commander.selection = [];
+                clearInterval(ci.intv);
             }
         }, ci.time);
         return ci.time;
+    },
+    drawBox: function () {
+        if (ci.enabled && ui.mode === "battle") {
+
+            eval(onecup["import"]());
+
+            div(".hover-white-gray", () => {
+                border_radius("15px");
+                text_align("center");
+                padding(20);
+                margin(10);
+
+                text("Cinematic Istrolid - by Vaxyyy");
+
+                img({
+                    src: 'https://mk0localeyesvidpssgk.kinstacdn.com/wp-content/uploads/2019/05/camera.png',
+                    width: 32,
+                    height: 32,
+                });
+            });
+        }
+    },
+};
+
+
+window.body = function () {
+    ci.oldWindow_body.apply(this, arguments);
+    ci.drawBox();
+};
+
+battleMode.onkeydown = e => {
+    if (e.key === "i") {
+        ci.resetTimer(ci.time)
+        ci.enabled = !ci.enabled;
+        ui.show = !ui.show;
+        onecup.refresh();
+    } else {
+        return ci.oldBattlemode_onkeydown.call(this, e);
     }
 };
