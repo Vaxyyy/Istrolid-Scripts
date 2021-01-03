@@ -3,8 +3,6 @@
 
     eval(onecup['import']());
 
-    white = [255, 255, 255, 255];
-
     rcMod = window.reconnectMod = {};
 
     rcMod.valid_uiModes = ['battle', 'multiplayer', 'design', 'battleroom', 'quickscore'];
