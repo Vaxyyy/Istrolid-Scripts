@@ -34,10 +34,16 @@
             if (fn != null) {
                 return fn();
             } else {
-                return onclick(function () {
-                    if (network.websocket !== undefined) network.websocket.close();
-                    return battleMode.joinServer(battleMode.serverName);
-                });
+                if (ui.mode === mode) {
+                    background_color("rgba(255,255,255,.6)");
+                    return onclick(function () {
+                        return ui.go('battle');
+                    });
+                } else {
+                    return onclick(function () {
+                        return ui.go(mode);
+                    });
+                }
             }
         });
     };
@@ -51,7 +57,12 @@
                 right(128);
                 z_index('2');
                 color("white");
-                return topButton("reconnect");
+                return topButton("reconnect", fn = function() { 
+                    onclick(function () {
+                        if (network.websocket !== undefined) network.websocket.close();
+                        return battleMode.joinServer(battleMode.serverName);
+                    })
+                });
             });
         }
         return window_body_orig.call(this);
