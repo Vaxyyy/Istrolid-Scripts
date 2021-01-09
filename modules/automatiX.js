@@ -3,7 +3,7 @@
 
     autoX = window.automatiX  = {};
 
-    autoX.enabled = false
+	autoX.enabled = false
 
     autoX.intv = null;
 
@@ -20,7 +20,7 @@
                         commander.selection.push(unit);
                     }
                 }
-                battleMode.stopOrder();
+                network.send("stopOrder");
                 commander.selection = [];
             }
         }, autoX.time);
