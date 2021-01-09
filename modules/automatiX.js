@@ -34,13 +34,13 @@
             }
         }, autoX.time);
     };
-    
-    hoverTip = function(message) {
-        return onmouseover(function(e) {
-          designMode.smallTipBounds = e.target.getBoundingClientRect();
-          return designMode.smallTip = message;
+
+    hoverTip = function (message) {
+        return onmouseover(function (e) {
+            designMode.smallTipBounds = e.target.getBoundingClientRect();
+            return designMode.smallTip = message;
         });
-      };
+    };
 
     editorButtons = function () {
         return div(function () {
@@ -90,14 +90,14 @@
         });
     };
 
-	window_body_orig = window.body;
+    window_body_orig = window.body;
 
-	window.body = function () {
-		if (ui.mode === 'design') {
-			autoX.draw();
-		}
-		return window_body_orig.call(this);
-	};
+    window.body = function () {
+        if (ui.mode === 'design') {
+            autoX.draw();
+        }
+        return window_body_orig.call(this);
+    };
 }).call(this);
 
-automaticX.resetTime(automaticX.time);
+automaticX.resetTime(automaticX.time); //starts code
