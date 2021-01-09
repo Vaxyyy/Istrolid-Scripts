@@ -3,7 +3,7 @@
 
     autoX = window.automatiX  = {};
 
-	autoX.enabled = false;
+    autoX.enabled = false;
 
     autoX.intv = null;
 
@@ -15,7 +15,7 @@
         clearInterval(autoX.intv);
         clearInterval(intv);
         return autoX.intv = setInterval(() => {
-            if (autoX.enabled && sim.state === 'running' && commander.side !== 'spectators') {
+            if (autoX.enabled && sim.state === 'running' && commander.side !== 'spectators' || localStorage.useAi) {
                 commander.selection = [];
                 for (let i in intp.things) {
                     unit = intp.things[i];
