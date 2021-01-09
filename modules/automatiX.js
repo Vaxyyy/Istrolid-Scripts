@@ -46,7 +46,11 @@
         return div(function () {
             var editorButton;
             position("absolute");
-            right(500);
+            if (intp.local) {
+                right(500);
+            } else {
+                right(460);
+            }
             top(80);
             z_index('2');
             width(620);
