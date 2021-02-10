@@ -1,8 +1,0 @@
-let oldBattleModeJoinServer = BattleMode.prototype.joinServer;
-BattleMode.prototype.joinServer = function (serverName) {
-    oldBattleModeJoinServer.apply(this, arguments);
-
-    if (['Istroverse (KevX)'].includes(serverName)) {
-        localStorage.useAi = false;
-    }
-};
