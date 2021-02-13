@@ -863,10 +863,17 @@
                 cell("turnSpeed.png", ((u.turnSpeed * 16 / Math.PI * 180).toFixed(1)) + "&deg;/s", "turn rate");
                 cell("mass.png", (u.mass.toFixed(1)) + "T", "ship total mass");
                 cell("arc360.png", (u.radius.toFixed(1)) + "m", "ship size");
-                u.burst = u.weapons.map(x => x.damage).reduce((a, b) => a + b, 0);
+                // map weapons
+                u.burst = 0;
+                u.pd_Energy = 0;
+                u.weapon_Energy = 0;
                 u.weapons.map(x => {
-                    if (x.name === "Point Defence") u.burst -= x.damage
-                });
+                    if (x.name === "Point Defence") u.pd_energy += x.fireEnergy;
+                    else {
+                        u.weapon_Energy += x.fireEnergy;
+                        u.burst += x.damage;
+                    }
+                })
                 if (u.fireEnergy) {
                     divider_small();
                     cell("window.png", (u.weaponDPS * u.hp / u.cost).toFixed(2) + " brawl ", "value");
@@ -876,30 +883,33 @@
                 }
                 powerBar(u);
                 divider_small();
+                // map parts
                 u.shield_Energy = 0;
-                u.pd_Energy = 0;
-                u.weapon_Energy = 0;
                 u.cloak_energy = 0;
-                u.jump_energy =0;
+                u.jump_energy = 0;
                 u.parts.map(x => {
-                    if (x.name === "Cloak Generator") u.cloak_energy += x.useEnergy * 16;
-                    if (x.name === "Jump Engine") u.jump_energy += x.useEnergy * 16;;
-                    if (x.name === "Shield Capacitor") u.shield_Energy += x.useEnergy * 16;;
-                    if (x.name === "Advanced Shield Generator") u.shield_Energy += x.useEnergy * 16;;
-                    if (x.name === "Heavy Shield Generator") u.shield_Energy += x.useEnergy * 16;;
-                })
-                cell("shield.png", (u.shield_Energy) + "-E", "energy needed to regen shields per second");
-                u.weapons.map(x => {
-                    if (x.name === "Point Defence") u.pd_energy += x.fireEnergy;
-                    else u.weapon_Energy += x.fireEnergy;;
+                    switch (x.name) {
+                        case "Cloak Generator":
+                            u.cloak_energy += x.useEnergy * 16;
+                            break;
+                        case "Jump Engine":
+                            u.jump_energy += x.useEnergy * 16;
+                            break;
+                        case "Shield Capacitor":
+                        case "Advanced Shield Generator":
+                        case "Heavy Shield Generator":
+                            u.shield_Energy += x.useEnergy * 16;
+                            break;
+                    }
                 })
                 cell("energyGen.png", "+" + ((u.genEnergy * 16).toFixed(0)) + "-E", "energy generated per second");
                 cell("energyMove.png", ((u.moveEnergy * 16).toFixed(0)) + "-E", "energy needed to move per second");
                 cell("energyStorage.png", (u.storeEnergy.toFixed(0)) + "-E", "battery capacity");
                 cell("energyFire.png", ((u.fireEnergy * 16).toFixed(0)) + "-E", "energy needed to fire all weapons per second");
+                if (u.shield_Energy) cell("shield.png", (u.shield_Energy) + "-E", "energy needed to regen shields per second");
                 if (u.weapon_Energy) cell("damage.png", ((u.weapon_Energy * 16).toFixed(0)) + "-E", "energy needed to fire weapons");
-                if (u.cloak_energy) cell("cloak.png", ((u.cloak_energy * 16).toFixed(0)) + "-E", "energy needed to cloak");
-                if (u.jump_energy) cell("jump.png", ((u.jump_energy * 16).toFixed(0)) + "-E", "energy needed to jump");
+                if (u.cloak_energy) cell("cloak.png", (u.cloak_energy) + "-E", "energy needed to cloak");
+                if (u.jump_energy) cell("jump.png", (u.jump_energy) + "-E", "energy needed to jump");
                 if (u.pd_Energy) cell("antiMissle.png", ((u.pd_Energy * 16).toFixed(0)) + "-E", "energy needed to fire all PD");
                 divider();
                 u.weapons.sort(function (a, b) {
