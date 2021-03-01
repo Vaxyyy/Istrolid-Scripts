@@ -862,7 +862,7 @@
                 cell("arc.png", u.weaponArc + "&deg;", "max arc of weapons");
                 cell("turnSpeed.png", ((u.turnSpeed * 16 / Math.PI * 180).toFixed(1)) + "&deg;/s", "turn rate");
                 cell("mass.png", (u.mass.toFixed(1)) + "T", "ship total mass");
-                cell("arc360.png", (u.radius.toFixed(1)) + "m", "ship size");
+                cell("arc360.png", (u.radius.toFixed(5)) + "m", "ship size");
                 // map weapons
                 u.burst = 0;
                 u.pd_Energy = 0;
