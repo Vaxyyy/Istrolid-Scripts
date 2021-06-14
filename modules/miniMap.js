@@ -9,8 +9,10 @@
         miniMap_enabled: true,
         valueTracker_enabled: false
     };
-    sim.map_hight = 0;
-    sim.map_width = 0;
+    sim.map_east = 0;
+    sim.map_west = 0;
+    sim.map_north = 0;
+    sim.map_south = 0;
 
     miniButton = function (name, binding, fn) {
         return div(".hover-black", function () {
@@ -48,10 +50,11 @@
     }
 
     draw_miniMap = function () {
+        let north = 0, south = 0, east = 0, west = 0;
         div(function () {
             position("absolute");
 
-            bottom(126 + (window.innerHeight / 2) * `0.${Math.round(sim.map_hight)}`);
+            bottom(126 + (window.innerHeight / 2) * `0.${Math.round(sim.map_north)}`);
             left(0);
 
             width(96);
@@ -74,8 +77,8 @@
 
             z_index('2');
 
-            width((window.innerWidth / 2) * `0.${Math.round(sim.map_width)}`);
-            height((window.innerHeight / 2) * `0.${Math.round(sim.map_hight)}`);
+            width((window.innerWidth / 2) * `0.${Math.round(sim.map_east)}`);
+            height((window.innerHeight / 2) * `0.${Math.round(sim.map_north)}`);
             
             border("4px solid black");
             border_color("rgba(0,0,0,.2)");
@@ -84,6 +87,8 @@
             background_color("rgba(0,0,0,.1)");
 
             return div(function () {
+
+                
 
                 position("absolute");
 
@@ -95,12 +100,17 @@
 
                 for (let i in sim.things) {
                     thing = sim.things[i];
+
+
+                    if (thing.pos[0] > east) east = thing.pos[0];
+                    if (thing.pos[0] < west) west = thing.pos[0];
+                    if (thing.pos[1] > north) north = thing.pos[0];
+                    if (thing.pos[1] < south) south = thing.pos[0];
+
                     if (thing.spawn) {
                         if (thing.side == "alpha") {
                             blip(thing.pos, 32, "spawn", "white");
                         } else if (thing.side == "beta") {
-                            sim.map_width = thing.pos[0];
-                            sim.map_hight = thing.pos[1];
                             blip(thing.pos, 32, "spawn", "black");
                         }
                     } else if (thing.name === "CommandPoint" || thing.capping == 0) {
@@ -114,6 +124,12 @@
                         }
                     };
                 }
+
+                sim.map_east = east;
+                sim.map_west = west;
+                sim.map_north = north;
+                sim.map_south = south;
+
             });
         });
     };
