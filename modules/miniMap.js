@@ -54,7 +54,12 @@
         div(function () {
             position("absolute");
 
-            bottom(126 + (window.innerHeight / 2) * `0.${Math.round(sim.map_north)}`);
+            if (sim.map_north > sim.map_east) {
+                bottom(124 + (window.innerHeight / 2) * `0.${Math.round(sim.map_north)}`);
+            } else {
+                bottom(124 + (window.innerHeight / 2) * `0.${Math.round(sim.map_east)}`);
+            }
+            
             left(0);
 
             width(96);
@@ -77,9 +82,16 @@
 
             z_index('2');
 
-            width((window.innerWidth / 2) * `0.${Math.round(sim.map_east)}`);
-            height((window.innerHeight / 2) * `0.${Math.round(sim.map_north)}`);
-            
+            if (sim.map_north > sim.map_east) {
+                width((window.innerWidth / 2) * `0.${Math.round(sim.map_north)}`);
+                height((window.innerHeight / 2) * `0.${Math.round(sim.map_north)}`);
+            } else if (sim.map_east > sim.map_north) {
+                width((window.innerWidth / 2) * `0.${Math.round(sim.map_east)}`);
+                height((window.innerHeight / 2) * `0.${Math.round(sim.map_east)}`);
+            } else {
+                width((window.innerWidth / 2) * `0.${Math.round(sim.map_east)}`);
+                height((window.innerHeight / 2) * `0.${Math.round(sim.map_north)}`);
+            }
             border("4px solid black");
             border_color("rgba(0,0,0,.2)");
             border_radius("0px 10px 0px 0px");
