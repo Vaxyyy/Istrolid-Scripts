@@ -169,7 +169,7 @@
     window.body = e => {
         if (ui.mode === "battle") {
             if (environment.miniMap_enabled) draw_miniMap();
-            if (environment.valueTracker_enabled) draw_valueTracker();
+            //if (environment.valueTracker_enabled) draw_valueTracker();
 
             miniButton("aoe", "Mini Map", function () {
                 z_index("2");
@@ -202,7 +202,7 @@
 
     setInterval(() => {
         if (ui.mode === "battle") onecup.refresh();
-        if (sim.theme !== undefined) mapColor_RGB = JSON.stringify(sim.theme.spotColor).replace(`[`, `rgb(`).slice(0, -5).concat(`)`);; 
-    }, (sim.ticksPerSec + 1) * 2);
+        //if (sim.theme !== undefined) mapColor_RGB = JSON.stringify(sim.theme.spotColor).replace(`[`, `rgb(`).slice(0, -5).concat(`)`);; 
+    }, (sim.ticksPerSec + 1) * 1);
 
 }).call(this);
