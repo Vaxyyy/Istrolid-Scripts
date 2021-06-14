@@ -104,8 +104,9 @@
 
                     if (thing.pos[0] > east) east = thing.pos[0];
                     if (thing.pos[0] < west) west = thing.pos[0];
-                    if (thing.pos[1] > north) north = thing.pos[0];
-                    if (thing.pos[1] < south) south = thing.pos[0];
+
+                    if (thing.pos[1] > north) north = thing.pos[1];
+                    if (thing.pos[1] < south) south = thing.pos[1];
 
                     if (thing.spawn) {
                         if (thing.side == "alpha") {
@@ -129,7 +130,6 @@
                 sim.map_west = west;
                 sim.map_north = north;
                 sim.map_south = south;
-
             });
         });
     };
